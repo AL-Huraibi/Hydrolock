@@ -1046,7 +1046,7 @@ async function analyzeVideo() {
             },
             {
               type: 'text',
-              text: 'This is a frame from a video where a person is supposed to be drinking water or a beverage. Does this image show a person drinking from a cup, bottle, glass, or any container? Look for the person holding a container to their mouth or face. Reply with only JSON: {"drinking": true/false, "reason": "brief reason"}'
+              text: 'You are a STRICT hydration verification system. You must verify ALL conditions are true or return drinking:false. CONDITIONS: (1) A human face is clearly visible. (2) Person is holding a cup, bottle, or glass. (3) The container is at or near their mouth in an active drinking position. (4) This is clearly a real person drinking - NOT a wall, object, empty room, or unrelated scene. Be very strict. A wall, empty scene, hand alone, or face without container ALL fail. Reply ONLY with JSON: {"drinking": true/false, "face_visible": true/false, "container_visible": true/false, "reason": "one sentence"}'
             }
           ]
         }]
@@ -1070,12 +1070,7 @@ async function analyzeVideo() {
       showFailResult("We couldn't clearly see you drinking. Make sure your face and cup are visible.");
     }
   } catch(err) {
-    // If API fails, fall back to duration check
-    if (state.recordingSeconds >= 2) {
-      showSuccessResult();
-    } else {
-      showFailResult('Verification failed. Please try again.');
-    }
+    showFailResult('Verification failed. Please check your internet connection and try again.');
   }
 }
 
